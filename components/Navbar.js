@@ -33,7 +33,11 @@ export const pages = [
         path: "/contact",
     },
 ];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settingsLoggedIn = ["Profile", "Logout"];
+const settingsLoggedOut = [
+    { name: "Login", path: "/login" },
+    { name: "Sign Up", path: "/signup" },
+];
 
 const Navbar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -175,10 +179,12 @@ const Navbar = () => {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textAlign="center">{setting}</Typography>
-                                </MenuItem>
+                            {settingsLoggedOut.map((setting) => (
+                                <Link href={setting.path}>
+                                    <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+                                        <Typography textAlign="center">{setting.name}</Typography>
+                                    </MenuItem>
+                                </Link>
                             ))}
                         </Menu>
                     </Box>
