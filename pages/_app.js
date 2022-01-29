@@ -1,7 +1,27 @@
-import '../styles/globals.css'
+import Layout from "../components/Layout";
+import "../styles/globals.css";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+
+const theme = createTheme({
+    palette: {
+        type: "light",
+        primary: {
+            main: "#005248",
+        },
+        secondary: {
+            main: "#FABB51",
+        },
+    },
+});
 
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+    return (
+        <ThemeProvider theme={theme}>
+            <Layout>
+                <Component {...pageProps} />
+            </Layout>
+        </ThemeProvider>
+    );
 }
 
-export default MyApp
+export default MyApp;
