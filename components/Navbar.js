@@ -13,6 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import Link from "next/link";
 import { Link as MUILink } from "@mui/material";
+import { useAuth } from "../context/AuthContext";
 
 export const pages = [
     { name: "Home", path: "/" },
@@ -33,15 +34,29 @@ export const pages = [
         path: "/contact",
     },
 ];
-const settingsLoggedIn = ["Profile", "Logout"];
+const settingsLoggedIn = [
+    { name: "Account", path: "/account" },
+    { name: "Logout", path: "/logout" },
+];
 const settingsLoggedOut = [
-    { name: "Login", path: "/login" },
+    { name: "Sign In", path: "/signin" },
     { name: "Sign Up", path: "/signup" },
 ];
 
-const Navbar = () => {
+const Navbar = (props) => {
+    const { currentUser } = useAuth();
+    const [settings, setSettings] = React.useState(settingsLoggedOut);
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+    React.useEffect(() => {
+        console.log({ useffectNB: currentUser });
+        if (currentUser) {
+            setSettings(settingsLoggedIn);
+        } else {
+            setSettings(settingsLoggedOut);
+        }
+    }, [currentUser]);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -145,7 +160,7 @@ const Navbar = () => {
                                     sx={{ mx: 4 }}
                                 >
                                     <Typography
-                                        color="#000"
+                                        color="#fff"
                                         fontSize="1.2rem"
                                         component="span"
                                         className="menu-link"
@@ -160,7 +175,10 @@ const Navbar = () => {
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                <Avatar
+                                    alt={currentUser ? currentUser.displayName : "Jane Doe"}
+                                    src="/static/images/avatar/2.jpg"
+                                />
                             </IconButton>
                         </Tooltip>
                         <Menu
@@ -179,9 +197,9 @@ const Navbar = () => {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {settingsLoggedOut.map((setting) => (
-                                <Link href={setting.path}>
-                                    <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+                            {settings.map((setting) => (
+                                <Link href={setting.path} key={setting.name}>
+                                    <MenuItem onClick={handleCloseUserMenu}>
                                         <Typography textAlign="center">{setting.name}</Typography>
                                     </MenuItem>
                                 </Link>

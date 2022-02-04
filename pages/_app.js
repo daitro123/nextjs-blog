@@ -1,16 +1,17 @@
+import { red, teal } from "@mui/material/colors";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Layout from "../components/Layout";
-import "../styles/globals.css";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
 import AuthProvider from "../context/AuthContext";
+import "../styles/globals.css";
 
 const theme = createTheme({
     palette: {
         type: "light",
         primary: {
-            main: "#005248",
+            main: teal[500],
         },
         secondary: {
-            main: "#FABB51",
+            main: red[200],
         },
     },
 });
