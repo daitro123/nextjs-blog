@@ -24,14 +24,16 @@ const Post = (props) => {
     return (
         <Container maxWidth="md">
             <main>
-                <Grid container spacing={5} sx={{ mt: 3 }}>
+                <Container spacing={5} sx={{ mt: 3 }}>
                     <Typography gutterBottom variant="h2" component={"h1"} marginTop={15}>
                         {post.title}
                     </Typography>
-                    <Typography fontSize={"1.125rem"}>
-                        <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
-                    </Typography>
-                </Grid>
+
+                    <div
+                        dangerouslySetInnerHTML={{ __html: post.content }}
+                        style={{ fontSize: "1.25rem" }}
+                    ></div>
+                </Container>
             </main>
         </Container>
     );

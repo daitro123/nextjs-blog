@@ -1,5 +1,23 @@
 import { db } from "./firebase";
-import { collection, getDocs, getDoc, doc } from "firebase/firestore/lite";
+import {
+    collection,
+    getDocs,
+    getDoc,
+    doc,
+    query,
+    where,
+    setDoc,
+    Timestamp,
+} from "firebase/firestore/lite";
+
+export class Post {
+    constructor(title, content, user_uid) {
+        this.date = Timestamp.fromDate(new Date());
+        this.title = title;
+        this.content = content;
+        this.user_uid = user_uid;
+    }
+}
 
 export async function getPosts() {
     const postsCol = collection(db, "posts");
@@ -21,4 +39,22 @@ export async function getPost(id) {
     }
 
     return docSnap.data();
+}
+
+export async function getCurrentUserPosts(user) {
+    const q = query(collection(db, "posts"), where("user_uid", "==", user.uid));
+    const querySnapshot = await getDocs(q);
+    console.log(querySnapshot);
+    const postsList = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+        date: doc.get("date").toDate(),
+    }));
+    return postsList;
+}
+
+export async function savePost(post) {
+    const response = await setDoc(doc(collection(db, "posts")), { ...post });
+
+    return response;
 }
