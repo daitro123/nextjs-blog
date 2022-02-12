@@ -10,15 +10,6 @@ import {
     Timestamp,
 } from "firebase/firestore/lite";
 
-export class Post {
-    constructor(title, content, user_uid) {
-        this.date = Timestamp.fromDate(new Date());
-        this.title = title;
-        this.content = content;
-        this.user_uid = user_uid;
-    }
-}
-
 export async function getPosts() {
     const postsCol = collection(db, "posts");
     const postsSnapshot = await getDocs(postsCol);
@@ -42,9 +33,9 @@ export async function getPost(id) {
 }
 
 export async function getCurrentUserPosts(user) {
+    if (!user) return new Error("Unknown user!");
     const q = query(collection(db, "posts"), where("user_uid", "==", user.uid));
     const querySnapshot = await getDocs(q);
-    console.log(querySnapshot);
     const postsList = querySnapshot.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
@@ -54,7 +45,17 @@ export async function getCurrentUserPosts(user) {
 }
 
 export async function savePost(post) {
-    const response = await setDoc(doc(collection(db, "posts")), { ...post });
+    const response = await setDoc(doc(collection(db, "posts")), {
+        ...post,
+        date: Timestamp.fromDate(new Date()),
+    });
+    return response;
+}
 
+export async function updatePost(post) {
+    const response = await setDoc(doc(db, "posts", post.id), {
+        ...post,
+        date: Timestamp.fromDate(new Date()),
+    });
     return response;
 }

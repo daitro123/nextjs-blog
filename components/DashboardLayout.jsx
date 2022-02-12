@@ -12,6 +12,7 @@ import NavItem from "../components/dashboard/NavItem";
 import { useRouter } from "next/router";
 import { useAuth } from "../context/AuthContext";
 import NoSSR from "./NoSSR";
+import withProtected from "./auth/withProtected";
 
 const items = [
     {
@@ -62,7 +63,7 @@ const DashboardLayout = ({ children }) => {
                             );
                         })}
                     </Grid>
-                    <Grid item xs={8}>
+                    <Grid item xs={8} paddingX={2}>
                         {children}
                     </Grid>
                 </Grid>
@@ -71,4 +72,4 @@ const DashboardLayout = ({ children }) => {
     );
 };
 
-export default DashboardLayout;
+export default withProtected(DashboardLayout);

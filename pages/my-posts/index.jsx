@@ -48,7 +48,7 @@ export default function MyPosts() {
 
 function EditPostIcon(props) {
     return (
-        <Link href={"/blog/" + props.params.row.id}>
+        <Link href={"/edit-post/" + props.params.row.id}>
             <div className="" style={{ cursor: "pointer" }}>
                 <EditIcon index={props.params.row.id} />
             </div>
