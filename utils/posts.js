@@ -8,13 +8,13 @@ import {
     where,
     setDoc,
     Timestamp,
+    deleteDoc,
 } from "firebase/firestore/lite";
 
 export async function getPosts() {
     const postsCol = collection(db, "posts");
     const postsSnapshot = await getDocs(postsCol);
     const postsList = postsSnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-    console.log(postsList);
     return postsList;
 }
 
@@ -57,5 +57,10 @@ export async function updatePost(post) {
         ...post,
         date: Timestamp.fromDate(new Date()),
     });
+    return response;
+}
+
+export async function deletePost(id) {
+    const response = await deleteDoc(doc(db, "posts", id));
     return response;
 }

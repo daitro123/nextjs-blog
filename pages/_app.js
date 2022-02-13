@@ -14,6 +14,9 @@ const theme = createTheme({
             main: red[200],
         },
     },
+    typography: {
+        fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif`,
+    },
 });
 
 function MyApp({ Component, pageProps }) {

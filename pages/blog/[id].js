@@ -31,7 +31,12 @@ const Post = (props) => {
 
                     <div
                         dangerouslySetInnerHTML={{ __html: post.content }}
-                        style={{ fontSize: "1.25rem" }}
+                        className="post__content"
+                        style={{
+                            fontSize: "1.25rem",
+                            fontFamily: `"Roboto", sans-serif`,
+                            fontWeight: 300,
+                        }}
                     ></div>
                 </Container>
             </main>
