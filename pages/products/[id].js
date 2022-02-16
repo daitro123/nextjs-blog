@@ -1,13 +1,12 @@
 import * as React from "react";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import useSWR from "swr";
 import { useRouter } from "next/router";
-import { CircularProgress, Container } from "@mui/material";
+import { Container } from "@mui/material";
+import Loading from "../../components/Loading";
 
 export default function ProductPage(props) {
     const router = useRouter();
@@ -31,20 +30,7 @@ export default function ProductPage(props) {
         );
     }
 
-    if (!data) {
-        return (
-            <Container
-                sx={{
-                    minHeight: "80vh",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    display: "flex",
-                }}
-            >
-                <CircularProgress />
-            </Container>
-        );
-    }
+    if (!data) return <Loading />;
 
     return (
         <Container

@@ -18,8 +18,8 @@ import { useAuth } from "../context/AuthContext";
 export const pages = [
     { name: "Home", path: "/" },
     {
-        name: "About",
-        path: "/about",
+        name: "News",
+        path: "/news",
     },
     {
         name: "Products",

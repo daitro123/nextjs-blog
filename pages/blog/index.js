@@ -2,32 +2,17 @@ import { Container, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import PostCard from "../../components/posts/PostCard";
 import { getPosts } from "../../utils/posts";
+import { Masonry } from "@mui/lab";
+import { uuid } from "uuidv4";
 
 const Posts = ({ posts }) => {
-    // const [posts, setPosts] = useState([]);
-
-    // useEffect(() => {
-    //     const posts = async () => {
-    //         const posts = await getPosts();
-    //         setPosts(posts);
-    //     };
-
-    //     posts().catch((err) => console.log(err));
-    // }, []);
-
-    console.log(posts);
-
     return (
         <Container maxWidth="md">
-            <Grid container spacing={2} sx={{ my: 5 }}>
+            <Masonry columns={2} spacing={2} sx={{ my: 5 }}>
                 {posts.map((post) => {
-                    return (
-                        <Grid item xs={12} sm={6} md={4} key={post.id}>
-                            <PostCard post={post} />
-                        </Grid>
-                    );
+                    return <PostCard post={post} key={uuid()} />;
                 })}
-            </Grid>
+            </Masonry>
         </Container>
     );
 };
