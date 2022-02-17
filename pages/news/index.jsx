@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Loading from "../../components/Loading";
 import PostCard from "../../components/posts/PostCard";
 import { Masonry } from "@mui/lab";
-import { uuid } from "uuidv4";
+import { v4 as uuid } from "uuid";
 import SearchBar from "../../components/SearchBar";
 
 const NewsList = () => {

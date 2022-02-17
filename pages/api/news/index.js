@@ -1,40 +1,50 @@
 import * as dataJson from "../../../utils/newsData.json";
 
-const simulatedAPI = (searchString) => {
+const shortTimeOut = (func) => {
+    setTimeout(func, 400);
+};
+
+const getAll = () => {
     return new Promise((resolve, reject) => {
-        if (searchString) {
+        setTimeout(() => {
+            resolve(dataJson);
+        }, 2000);
+    });
+};
+
+const getSearched = (searchQuery) => {
+    return new Promise((resolve, reject) => {
+        if (searchQuery) {
             const searchResult = dataJson.data
                 .filter((item) => {
-                    return item.title.toLowerCase().indexOf(searchString) != -1;
+                    return item.title.toLowerCase().indexOf(searchQuery) != -1;
                 })
                 .slice(0, 10);
 
             if (searchResult.length > 0) {
-                setTimeout(() => {
-                    resolve({ pagination: { limit: 10 }, data: searchResult });
-                }, 400);
+                shortTimeOut(resolve({ pagination: { limit: 10 }, data: searchResult }));
             } else {
-                setTimeout(() => {
-                    reject("No items found");
-                }, 400);
+                shortTimeOut(reject("No items found"));
             }
         } else {
-            setTimeout(() => {
-                resolve(dataJson);
-            }, 2000);
+            shortTimeOut(reject("Empty query"));
         }
     });
 };
 
 export default async function handler(req, res) {
-    const {
-        query: { search },
-    } = req;
+    const searchQuery = req.query.search;
 
     if (req.method === "GET") {
-        simulatedAPI(search)
-            .then((data) => res.status(200).json(data))
-            .catch((err) => res.status(404).json({ message: err }));
+        if (searchQuery === undefined) {
+            getAll()
+                .then((data) => res.status(200).json(data))
+                .catch((err) => res.status(404).json({ message: err }));
+        } else {
+            getSearched(searchQuery)
+                .then((data) => res.status(200).json(data))
+                .catch((err) => res.status(404).json({ message: err }));
+        }
     } else {
         res.status(404).json({ message: "Can't resolve" });
     }

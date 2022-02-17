@@ -24,7 +24,7 @@
         "react-quill": "^1.3.5",
         "slate-react": "^0.72.9",
         "swr": "^1.2.0",
-        "uuidv4": "^6.2.12"
+        "uuid": "^8.3.2"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.2",

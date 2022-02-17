@@ -1,23 +1,24 @@
 import { FormControl, List, ListItem, TextField, useTheme } from "@mui/material";
 import { Box } from "@mui/system";
-import uuid from "draft-js/lib/uuid";
+import { v4 as uuid } from "uuid";
 import React, { useState, useMemo } from "react";
 import { debounce, truncateString } from "../utils/utils";
 
 const SearchBar = ({ url }) => {
     const theme = useTheme();
-    const [searchInput, setSearchInput] = useState("");
     const [suggestions, setSuggestions] = useState([]);
 
-    const handleSearch = (event) => {
-        setSearchInput(event.target.value);
-        fetch(url + event.target.value)
+    const handleSearch = (e) => {
+        if (!e.target.value) return setSuggestions([]);
+
+        fetch(url + e.target.value)
             .then((res) => res.json())
             .then((json) => {
-                if (json.data) {
+                console.log(json);
+                if (json.data && e.target.value) {
                     setSuggestions(json.data);
                 } else {
-                    setSuggestions([]);
+                    setSuggestions([json.message]);
                 }
             })
             .catch((err) => {
@@ -33,7 +34,7 @@ const SearchBar = ({ url }) => {
             </FormControl>
             <Box
                 sx={{
-                    display: searchInput ? "block" : "none",
+                    display: suggestions.length > 0 ? "block" : "none",
                     border: "1px solid whitesmoke",
                     width: "100%",
                     position: "absolute",
@@ -45,8 +46,8 @@ const SearchBar = ({ url }) => {
                 }}
             >
                 <List>
-                    {suggestions.length > 0 ? (
-                        suggestions.map((item) => {
+                    {suggestions
+                        ?.map((item) => {
                             return (
                                 <ListItem
                                     sx={{
@@ -58,13 +59,11 @@ const SearchBar = ({ url }) => {
                                     }}
                                     key={uuid()}
                                 >
-                                    {truncateString(item.title, 5)}
+                                    {item.title ? truncateString(item.title, 5) : item}
                                 </ListItem>
                             );
                         })
-                    ) : (
-                        <ListItem>No articles found</ListItem>
-                    )}
+                        .slice(0, 10)}
                 </List>
             </Box>
         </div>
